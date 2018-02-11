@@ -32,19 +32,4 @@ public class LocacaoService {
 		return locacao;
 	}
 
-	@Test
-	public void teste() {
-		//Cenario
-		LocacaoService locacaoService = new LocacaoService();
-		Usuario usuario = new Usuario("João Verissimo"); 
-		Filme filme = new Filme("Matrix", 3, 12.98D);
-		
-		//Acao
-		Locacao locacao = locacaoService.alugarFilme(usuario, filme);
-		
-		//Verificacao
-		Assert.assertTrue(locacao.getValor() == 12.98);
-		Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
-		Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.adicionarDias(new Date(), 1)));
-	}
 }
