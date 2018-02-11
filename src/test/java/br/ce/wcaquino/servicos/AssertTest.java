@@ -1,5 +1,8 @@
 package br.ce.wcaquino.servicos;
 
+import static org.junit.Assert.assertThat;
+
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -37,5 +40,9 @@ public class AssertTest {
 		
 		Assert.assertNull(u3);
 		Assert.assertNotNull(u2);
+		
+		//CoreMatchers
+		assertThat(u1, CoreMatchers.is(CoreMatchers.equalTo(u2)));
+		
 	}
 }
