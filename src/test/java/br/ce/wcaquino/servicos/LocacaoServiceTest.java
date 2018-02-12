@@ -1,11 +1,11 @@
 package br.ce.wcaquino.servicos;
 
+import static br.ce.wcaquino.matchers.LocadoraMatchers.caiEm;
+import static br.ce.wcaquino.matchers.LocadoraMatchers.caiEmUmaSegunda;
+import static br.ce.wcaquino.matchers.LocadoraMatchers.isHoje;
+import static br.ce.wcaquino.matchers.LocadoraMatchers.isHojeMaisDiferencaDias;
 import static br.ce.wcaquino.utils.DataUtils.adicionarDias;
 import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
-import static matchers.LocadoraMatchers.caiEm;
-import static matchers.LocadoraMatchers.caiEmUmaSegunda;
-import static matchers.LocadoraMatchers.isHoje;
-import static matchers.LocadoraMatchers.isHojeMaisDiferencaDias;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
@@ -35,9 +35,9 @@ import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.excessoes.FilmeSemEstoqueException;
 import br.ce.wcaquino.excessoes.LocadoraException;
+import br.ce.wcaquino.matchers.DiaSemanaMatcher;
+import br.ce.wcaquino.matchers.LocadoraMatchers;
 import br.ce.wcaquino.utils.DataUtils;
-import matchers.DiaSemanaMatcher;
-import matchers.LocadoraMatchers;
 
 public class LocacaoServiceTest {
 

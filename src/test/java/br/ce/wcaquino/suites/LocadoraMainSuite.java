@@ -1,4 +1,4 @@
-package suites;
+package br.ce.wcaquino.suites;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
