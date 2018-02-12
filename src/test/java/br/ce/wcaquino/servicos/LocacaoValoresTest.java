@@ -16,6 +16,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
+import br.ce.wcaquino.builders.FilmeBuilder;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -36,13 +37,13 @@ public class LocacaoValoresTest {
 	@Parameter(value=2)
 	public String cenario;
 	
-	private static Filme filme1 = new Filme("Matrix", 3, 10.00D);
-	private static Filme filme2 = new Filme("Star Wars", 3, 10.00D);
-	private static Filme filme3 = new Filme("O circulo", 3, 10.00D);
-	private static Filme filme4 = new Filme("Exterminador", 3, 10.00D);
-	private static Filme filme5 = new Filme("Alien", 3, 10.00D);
-	private static Filme filme6 = new Filme("Predador", 3, 10.00D);
-	private static Filme filme7 = new Filme("Predador 2", 3, 10.00D);
+	private static Filme filme1 = FilmeBuilder.umFilme().get();
+	private static Filme filme2 = FilmeBuilder.umFilme().get();
+	private static Filme filme3 = FilmeBuilder.umFilme().get();
+	private static Filme filme4 = FilmeBuilder.umFilme().get();
+	private static Filme filme5 = FilmeBuilder.umFilme().get();
+	private static Filme filme6 = FilmeBuilder.umFilme().get();
+	private static Filme filme7 = FilmeBuilder.umFilme().get();
 	
 	@Parameters(name="Teste parametrizado {index} - cenário: {2}")
 	public static Collection<Object[]> getParametros(){

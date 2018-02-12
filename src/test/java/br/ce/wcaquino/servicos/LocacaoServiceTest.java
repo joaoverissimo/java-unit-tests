@@ -1,5 +1,7 @@
 package br.ce.wcaquino.servicos;
 
+import static br.ce.wcaquino.builders.FilmeBuilder.umFilme;
+import static br.ce.wcaquino.builders.UsuarioBuilder.umUsuario;
 import static br.ce.wcaquino.matchers.LocadoraMatchers.caiEm;
 import static br.ce.wcaquino.matchers.LocadoraMatchers.caiEmUmaSegunda;
 import static br.ce.wcaquino.matchers.LocadoraMatchers.isHoje;
@@ -30,6 +32,8 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
+import br.ce.wcaquino.builders.FilmeBuilder;
+import br.ce.wcaquino.builders.UsuarioBuilder;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -53,8 +57,8 @@ public class LocacaoServiceTest {
 		
 		//Cenario
 		LocacaoService locacaoService = new LocacaoService();
-		Usuario usuario = new Usuario("João Verissimo"); 		
-		List<Filme> filmes = Arrays.asList(new Filme("Matrix", 3, 12.98D));
+		Usuario usuario = umUsuario().get();	
+		List<Filme> filmes = Arrays.asList(umFilme().comValor(12.98).get());
 		
 		//Acao
 		Locacao locacao = locacaoService.alugarFilme(usuario, filmes);
@@ -71,8 +75,8 @@ public class LocacaoServiceTest {
 	public void deveImpedirDeAlugarFilmeSemEstoque() throws Exception	 {
 		//Cenario
 		LocacaoService locacaoService = new LocacaoService();
-		Usuario usuario = new Usuario("João Verissimo"); 		
-		List<Filme> filmes = Arrays.asList(new Filme("Matrix", 0, 12.98D));
+		Usuario usuario = umUsuario().get(); 		
+		List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilmeSemEstoque().get());
 		
 		exception.expect(Exception.class);
 		exception.expectMessage("Filme sem estoque");
@@ -85,8 +89,8 @@ public class LocacaoServiceTest {
 	public void deveImpedirDeAlugarSemUsuario() throws FilmeSemEstoqueException {
 		//Cenario
 		LocacaoService locacaoService = new LocacaoService();
-		Usuario usuario = new Usuario("João Verissimo");
-		List<Filme> filmes = Arrays.asList(new Filme("Matrix", 3, 12.98D));
+		Usuario usuario = umUsuario().get();
+		List<Filme> filmes = Arrays.asList(umFilme().get());
 
 				
 		//Acao
@@ -102,7 +106,7 @@ public class LocacaoServiceTest {
 	public void deveImpedirDeAlugarFilmeSemFilme() throws Exception	 {
 		//Cenario
 		LocacaoService locacaoService = new LocacaoService();
-		Usuario usuario = new Usuario("João Verissimo"); 
+		Usuario usuario = umUsuario().get(); 
 		
 		exception.expect(LocadoraException.class);
 		exception.expectMessage("Filme vazio");
@@ -115,12 +119,12 @@ public class LocacaoServiceTest {
 	public void deveAplicarDesconto3filmes() throws LocadoraException, FilmeSemEstoqueException {
 		//Cenario
 		LocacaoService locacaoService = new LocacaoService();
-		Usuario usuario = new Usuario("João Verissimo");
+		Usuario usuario = umUsuario().get();
 		
 		List<Filme> filmes = new ArrayList<Filme>();
-		filmes.add(new Filme("Matrix", 3, 10.00D));
-		filmes.add(new Filme("Star Wars", 3, 10.00D));
-		filmes.add(new Filme("O circulo", 3, 10.00D));
+		filmes.add(umFilme().get());
+		filmes.add(umFilme().get());
+		filmes.add(umFilme().get());
 		
 		//Acao
 		Locacao locacao = locacaoService.alugarFilme(usuario, filmes);
@@ -133,13 +137,13 @@ public class LocacaoServiceTest {
 	public void deveAplicarDesconto4filmes() throws LocadoraException, FilmeSemEstoqueException {
 		//Cenario
 		LocacaoService locacaoService = new LocacaoService();
-		Usuario usuario = new Usuario("João Verissimo");
+		Usuario usuario = umUsuario().get();
 		
 		List<Filme> filmes = new ArrayList<Filme>();
-		filmes.add(new Filme("Matrix", 3, 10.00D));
-		filmes.add(new Filme("Star Wars", 3, 10.00D));
-		filmes.add(new Filme("O circulo", 3, 10.00D));
-		filmes.add(new Filme("Exterminador", 3, 10.00D));
+		filmes.add(umFilme().get());
+		filmes.add(umFilme().get());
+		filmes.add(umFilme().get());
+		filmes.add(umFilme().get());
 		
 		//Acao
 		Locacao locacao = locacaoService.alugarFilme(usuario, filmes);
@@ -152,14 +156,14 @@ public class LocacaoServiceTest {
 	public void deveAplicarDesconto5filmes() throws LocadoraException, FilmeSemEstoqueException {
 		//Cenario
 		LocacaoService locacaoService = new LocacaoService();
-		Usuario usuario = new Usuario("João Verissimo");
+		Usuario usuario = umUsuario().get();
 		
 		List<Filme> filmes = new ArrayList<Filme>();
-		filmes.add(new Filme("Matrix", 3, 10.00D));
-		filmes.add(new Filme("Star Wars", 3, 10.00D));
-		filmes.add(new Filme("O circulo", 3, 10.00D));
-		filmes.add(new Filme("Exterminador", 3, 10.00D));
-		filmes.add(new Filme("Alien", 3, 10.00D));
+		filmes.add(umFilme().get());
+		filmes.add(umFilme().get());
+		filmes.add(umFilme().get());
+		filmes.add(umFilme().get());
+		filmes.add(umFilme().get());
 		
 		//Acao
 		Locacao locacao = locacaoService.alugarFilme(usuario, filmes);
@@ -172,15 +176,15 @@ public class LocacaoServiceTest {
 	public void deveAplicarDesconto6filmes() throws LocadoraException, FilmeSemEstoqueException {
 		//Cenario
 		LocacaoService locacaoService = new LocacaoService();
-		Usuario usuario = new Usuario("João Verissimo");
+		Usuario usuario = umUsuario().get();
 		
 		List<Filme> filmes = new ArrayList<Filme>();
-		filmes.add(new Filme("Matrix", 3, 10.00D));
-		filmes.add(new Filme("Star Wars", 3, 10.00D));
-		filmes.add(new Filme("O circulo", 3, 10.00D));
-		filmes.add(new Filme("Exterminador", 3, 10.00D));
-		filmes.add(new Filme("Alien", 3, 10.00D));
-		filmes.add(new Filme("Predador", 3, 10.00D));
+		filmes.add(umFilme().get());
+		filmes.add(umFilme().get());
+		filmes.add(umFilme().get());
+		filmes.add(umFilme().get());
+		filmes.add(umFilme().get());
+		filmes.add(umFilme().get());
 		
 		//Acao
 		Locacao locacao = locacaoService.alugarFilme(usuario, filmes);
@@ -195,8 +199,8 @@ public class LocacaoServiceTest {
 		
 		//Cenario
 		LocacaoService locacaoService = new LocacaoService();
-		Usuario usuario = new Usuario("João Verissimo"); 		
-		List<Filme> filmes = Arrays.asList(new Filme("Matrix", 3, 12.98D));
+		Usuario usuario = umUsuario().get(); 		
+		List<Filme> filmes = Arrays.asList(umFilme().get());
 		
 		//Acao
 		Locacao locacao = locacaoService.alugarFilme(usuario, filmes);
