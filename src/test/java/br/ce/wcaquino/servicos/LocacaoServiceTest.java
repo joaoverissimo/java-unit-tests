@@ -4,6 +4,8 @@ import static br.ce.wcaquino.utils.DataUtils.adicionarDias;
 import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
 import static matchers.LocadoraMatchers.caiEm;
 import static matchers.LocadoraMatchers.caiEmUmaSegunda;
+import static matchers.LocadoraMatchers.isHoje;
+import static matchers.LocadoraMatchers.isHojeMaisDiferencaDias;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
@@ -59,8 +61,10 @@ public class LocacaoServiceTest {
 		
 		//Verificacao
 		error.checkThat(locacao.getValor(), is(equalTo(12.98)));
-		error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-		error.checkThat(isMesmaData(locacao.getDataRetorno(), adicionarDias(new Date(), 1)), is(true));
+		// error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
+		error.checkThat(locacao.getDataLocacao(), isHoje());
+		// error.checkThat(isMesmaData(locacao.getDataRetorno(), adicionarDias(new Date(), 1)), is(true));
+		error.checkThat(locacao.getDataRetorno(), isHojeMaisDiferencaDias(1));
 	}
 	
 	@Test()
