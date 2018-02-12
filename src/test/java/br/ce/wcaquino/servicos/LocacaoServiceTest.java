@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -42,6 +44,8 @@ public class LocacaoServiceTest {
 	
 	@Test
 	public void deveAlugarFilme() throws Exception {
+		Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
+		
 		//Cenario
 		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario = new Usuario("João Verissimo"); 		
@@ -176,5 +180,22 @@ public class LocacaoServiceTest {
 		
 		//Verificacao
 		Assert.assertThat(locacao.getValor(), is(equalTo(35d)));
+	}
+	
+	@Test
+	public void deveDevolverNaSegundaAoAlugarNoSabado() throws LocadoraException, FilmeSemEstoqueException {
+		Assume.assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
+		
+		//Cenario
+		LocacaoService locacaoService = new LocacaoService();
+		Usuario usuario = new Usuario("João Verissimo"); 		
+		List<Filme> filmes = Arrays.asList(new Filme("Matrix", 3, 12.98D));
+		
+		//Acao
+		Locacao locacao = locacaoService.alugarFilme(usuario, filmes);
+		
+		//Verificacao
+		boolean isSegunda = DataUtils.verificarDiaSemana(locacao.getDataRetorno(), Calendar.MONDAY);
+		Assert.assertTrue(isSegunda);
 	}
 }
