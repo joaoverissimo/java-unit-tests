@@ -11,7 +11,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.Date;
 
 import org.hamcrest.CoreMatchers;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -26,11 +30,39 @@ import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoServiceTest {
 
+	private static int contador = 0;
+	
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
 
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
+	
+	@After
+	public void start() {
+		//Pode ser utilizado para contexto
+		System.out.println("After " + contador);
+		contador ++;
+	}
+	
+	@Before
+	public void end() {
+		System.out.println("Before " +  contador);
+		contador ++;
+	}
+	
+	@AfterClass
+	public static void startClass() {
+		//Metodos estaticos podem ser utilizados para persistir valores entre testes
+		System.out.println("After Class " + contador);
+		contador ++;
+	}
+	
+	@BeforeClass
+	public static void endClass() {
+		System.out.println("Before Class " + contador);
+		contador ++;
+	}
 	
 	@Test
 	public void testeLocacao() throws Exception {
