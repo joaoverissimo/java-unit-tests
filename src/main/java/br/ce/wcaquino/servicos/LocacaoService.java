@@ -17,11 +17,41 @@ import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoService {
 	
+	
+	private static final int QNTD_FILMES_3 = 2;
+	private static final int QNTD_FILMES_4 = 3;
+	private static final int QNTD_FILMES_5 = 4;
+	private static final int QNTD_FILMES_6 = 5;
+	
+	private static final double DESCONTO_30_PORCENTO = 1d - 0.25d;
+	private static final double DESCONTO_50_PORCENTO = 1d - 0.50d;
+	private static final double DESCONTO_75_PORCENTO = 1d - 0.75d;
+	private static final double DESCONTO_100_PORCENTO = 0d;
+
 	public Double getPrecoLocacao(List<Filme> filmes) {
 		Double retorno = 0D;
 		
-		for (Filme filme : filmes) {
-			retorno += filme.getPrecoLocacao();
+		for (int i = 0; i < filmes.size(); i++) {
+			Filme filme = filmes.get(i);
+			Double valorFilme =  filme.getPrecoLocacao();
+			
+			if (i == QNTD_FILMES_3) {
+				valorFilme = valorFilme * DESCONTO_30_PORCENTO;
+			} 
+			
+			if (i == QNTD_FILMES_4) {
+				valorFilme = valorFilme * DESCONTO_50_PORCENTO;
+			} 
+			
+			if (i == QNTD_FILMES_5) {
+				valorFilme = valorFilme * DESCONTO_75_PORCENTO;
+			} 
+			
+			if (i == QNTD_FILMES_6) {
+				valorFilme = valorFilme * DESCONTO_100_PORCENTO;
+			} 
+			
+			retorno += valorFilme;
 		}
 		
 		return retorno;		
