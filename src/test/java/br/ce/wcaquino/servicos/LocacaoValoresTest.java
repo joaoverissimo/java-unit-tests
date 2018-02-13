@@ -3,12 +3,10 @@ package br.ce.wcaquino.servicos;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,10 +14,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
+import org.mockito.Mockito;
 
 import br.ce.wcaquino.builders.FilmeBuilder;
 import br.ce.wcaquino.dao.LocacaoDAO;
-import br.ce.wcaquino.dao.LocacaoDAOFake;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -65,7 +63,12 @@ public class LocacaoValoresTest {
 	@Before
 	public void setup() {
 		locacaoService = new LocacaoService();
-		locacaoService.setDao(new LocacaoDAOFake());
+		
+		LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
+		locacaoService.setDao(dao);
+		
+		SPCService spc = Mockito.mock(SPCService.class);
+		locacaoService.setSCPService(spc);
 	}
 	
 	@Test

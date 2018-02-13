@@ -30,6 +30,7 @@ public class LocacaoService {
 	private static final double DESCONTO_100_PORCENTO = 0d;
 
 	private LocacaoDAO dao;
+	private SPCService spcService;
 	
 	public Double getPrecoLocacao(List<Filme> filmes) {
 		Double retorno = 0D;
@@ -86,6 +87,10 @@ public class LocacaoService {
 			}
 		}
 		
+		if (spcService.possuiNegativacao(usuario)) {
+			throw new LocadoraException("Usuário negativado no SPC");
+		}
+		
 		Locacao locacao = new Locacao();
 		locacao.setFilmes(filmes);
 		locacao.setUsuario(usuario);
@@ -103,6 +108,10 @@ public class LocacaoService {
 
 	public void setDao(LocacaoDAO dao) {
 		this.dao = dao;
+	}
+	
+	public void setSCPService(SPCService spc) {
+		spcService = spc;
 	}
 	
 }
