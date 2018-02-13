@@ -29,6 +29,7 @@ import org.mockito.MockitoAnnotations;
 
 import br.ce.wcaquino.builders.FilmeBuilder;
 import br.ce.wcaquino.builders.LocacaoBuilder;
+import br.ce.wcaquino.builders.UsuarioBuilder;
 import br.ce.wcaquino.dao.LocacaoDAO;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
@@ -246,5 +247,22 @@ public class LocacaoServiceTest {
 		Mockito.verify(emailService).notificarAtraso(usuario);
 		Mockito.verify(emailService, Mockito.never()).notificarAtraso(usuario2);
 		Mockito.verifyNoMoreInteractions(emailService);
+	}
+	
+	@Test
+	public void deveTratarErrosSPC() throws LocadoraException, FilmeSemEstoqueException {
+		//cenario
+		Usuario usuario = UsuarioBuilder.umUsuario().get();
+		List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilme().get());
+	
+		Mockito.when(spcService.possuiNegativacao(usuario)).thenThrow(new RuntimeException("Erro 501 - SPC FORA DO AR"));
+
+		//verificacao
+		exception.expect(LocadoraException.class);
+		exception.expectMessage("Erro com o serviço do SPC");
+		
+		//acao
+		locacaoService.alugarFilme(usuario, filmes);
+
 	}
 }
