@@ -34,6 +34,8 @@ import org.junit.rules.ExpectedException;
 
 import br.ce.wcaquino.builders.FilmeBuilder;
 import br.ce.wcaquino.builders.UsuarioBuilder;
+import br.ce.wcaquino.dao.LocacaoDAO;
+import br.ce.wcaquino.dao.LocacaoDAOFake;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -45,18 +47,25 @@ import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoServiceTest {
 
+	private LocacaoService locacaoService;
+	
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
 
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 	
+	@Before
+	public void setup() {
+		locacaoService = new LocacaoService();
+		locacaoService.setDao(new LocacaoDAOFake());
+	}
+	
 	@Test
 	public void deveAlugarFilme() throws Exception {
 		Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
 		
 		//Cenario
-		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario = umUsuario().get();	
 		List<Filme> filmes = Arrays.asList(umFilme().comValor(12.98).get());
 		
@@ -74,7 +83,6 @@ public class LocacaoServiceTest {
 	@Test()
 	public void deveImpedirDeAlugarFilmeSemEstoque() throws Exception	 {
 		//Cenario
-		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario = umUsuario().get(); 		
 		List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilmeSemEstoque().get());
 		
@@ -88,7 +96,6 @@ public class LocacaoServiceTest {
 	@Test()
 	public void deveImpedirDeAlugarSemUsuario() throws FilmeSemEstoqueException {
 		//Cenario
-		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario = umUsuario().get();
 		List<Filme> filmes = Arrays.asList(umFilme().get());
 
@@ -105,7 +112,6 @@ public class LocacaoServiceTest {
 	@Test()
 	public void deveImpedirDeAlugarFilmeSemFilme() throws Exception	 {
 		//Cenario
-		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario = umUsuario().get(); 
 		
 		exception.expect(LocadoraException.class);
@@ -118,7 +124,6 @@ public class LocacaoServiceTest {
 	@Test
 	public void deveAplicarDesconto3filmes() throws LocadoraException, FilmeSemEstoqueException {
 		//Cenario
-		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario = umUsuario().get();
 		
 		List<Filme> filmes = new ArrayList<Filme>();
@@ -136,7 +141,6 @@ public class LocacaoServiceTest {
 	@Test
 	public void deveAplicarDesconto4filmes() throws LocadoraException, FilmeSemEstoqueException {
 		//Cenario
-		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario = umUsuario().get();
 		
 		List<Filme> filmes = new ArrayList<Filme>();
@@ -155,7 +159,6 @@ public class LocacaoServiceTest {
 	@Test
 	public void deveAplicarDesconto5filmes() throws LocadoraException, FilmeSemEstoqueException {
 		//Cenario
-		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario = umUsuario().get();
 		
 		List<Filme> filmes = new ArrayList<Filme>();
@@ -175,7 +178,6 @@ public class LocacaoServiceTest {
 	@Test
 	public void deveAplicarDesconto6filmes() throws LocadoraException, FilmeSemEstoqueException {
 		//Cenario
-		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario = umUsuario().get();
 		
 		List<Filme> filmes = new ArrayList<Filme>();
@@ -198,7 +200,6 @@ public class LocacaoServiceTest {
 		Assume.assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
 		
 		//Cenario
-		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario = umUsuario().get(); 		
 		List<Filme> filmes = Arrays.asList(umFilme().get());
 		

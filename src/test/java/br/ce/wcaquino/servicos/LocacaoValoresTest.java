@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -17,6 +18,8 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import br.ce.wcaquino.builders.FilmeBuilder;
+import br.ce.wcaquino.dao.LocacaoDAO;
+import br.ce.wcaquino.dao.LocacaoDAOFake;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -59,15 +62,15 @@ public class LocacaoValoresTest {
 		});
 	}
 	
-	@After
+	@Before
 	public void setup() {
 		locacaoService = new LocacaoService();
+		locacaoService.setDao(new LocacaoDAOFake());
 	}
 	
 	@Test
 	public void deveAplicarDescontoConformeParametros() throws LocadoraException, FilmeSemEstoqueException {
 		//Cenario
-		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario = new Usuario("João Verissimo");
 		
 		//Acao

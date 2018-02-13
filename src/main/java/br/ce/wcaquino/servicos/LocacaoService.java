@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import br.ce.wcaquino.dao.LocacaoDAO;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -17,7 +18,6 @@ import br.ce.wcaquino.excessoes.LocadoraException;
 import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoService {
-	
 	
 	private static final int QNTD_FILMES_3 = 2;
 	private static final int QNTD_FILMES_4 = 3;
@@ -29,6 +29,8 @@ public class LocacaoService {
 	private static final double DESCONTO_75_PORCENTO = 1d - 0.75d;
 	private static final double DESCONTO_100_PORCENTO = 0d;
 
+	private LocacaoDAO dao;
+	
 	public Double getPrecoLocacao(List<Filme> filmes) {
 		Double retorno = 0D;
 		
@@ -94,9 +96,13 @@ public class LocacaoService {
 		locacao.setDataRetorno(getDataRetorno(locacao.getDataLocacao()));
 		
 		//Salvando a locacao...	
-		//TODO adicionar método para salvar
+		dao.salvar(locacao);
 		
 		return locacao;
 	}
 
+	public void setDao(LocacaoDAO dao) {
+		this.dao = dao;
+	}
+	
 }
