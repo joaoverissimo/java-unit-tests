@@ -7,7 +7,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.MockitoAnnotations;
 
 import br.ce.wcaquino.dao.LocacaoDAO;
 import br.ce.wcaquino.entidades.Filme;
@@ -31,6 +33,12 @@ public class LocacaoService {
 
 	private LocacaoDAO dao;
 	private SPCService spcService;
+	private EmailService emailService;
+	
+	@Before
+	public void setup() {
+		MockitoAnnotations.initMocks(this);
+	}
 	
 	public Double getPrecoLocacao(List<Filme> filmes) {
 		Double retorno = 0D;
@@ -105,13 +113,13 @@ public class LocacaoService {
 		
 		return locacao;
 	}
-
-	public void setDao(LocacaoDAO dao) {
-		this.dao = dao;
-	}
 	
-	public void setSCPService(SPCService spc) {
-		spcService = spc;
+	public void notificarAtraso() {
+		List<Locacao> locacoes = dao.findEmAtraso();
+		for (Locacao locacao : locacoes) {
+			if (locacao.getDataRetorno().before(new Date())) {
+				emailService.notificarAtraso(locacao.getUsuario());
+			}
+		}
 	}
-	
 }

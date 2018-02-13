@@ -22,9 +22,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import br.ce.wcaquino.builders.FilmeBuilder;
+import br.ce.wcaquino.builders.LocacaoBuilder;
 import br.ce.wcaquino.dao.LocacaoDAO;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
@@ -34,9 +38,20 @@ import br.ce.wcaquino.excessoes.LocadoraException;
 import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoServiceTest {
-
+	
+	@InjectMocks
 	private LocacaoService locacaoService;
-	private SPCService spc;
+	@Mock
+	private SPCService spcService;
+	@Mock
+	private EmailService emailService;
+	@Mock
+	private LocacaoDAO dao;
+
+	@Before
+	public void setup() {
+		MockitoAnnotations.initMocks(this);
+	}
 	
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
@@ -44,16 +59,6 @@ public class LocacaoServiceTest {
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 	
-	@Before
-	public void setup() {
-		locacaoService = new LocacaoService();
-		
-		LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
-		locacaoService.setDao(dao);
-		
-		spc = Mockito.mock(SPCService.class);
-		locacaoService.setSCPService(spc);
-	}
 	
 	@Test
 	public void deveAlugarFilme() throws Exception {
@@ -212,12 +217,34 @@ public class LocacaoServiceTest {
 		Usuario usuario = umUsuario().get(); 		
 		List<Filme> filmes = Arrays.asList(umFilme().get());
 		
-		Mockito.when(spc.possuiNegativacao(usuario)).thenReturn(true);
+		Mockito.when(spcService.possuiNegativacao(Mockito.any(Usuario.class))).thenReturn(true);
 		
 		exception.expect(LocadoraException.class);
 		exception.expectMessage("Usuário negativado no SPC");
 		
 		//Acao
 		Locacao locacao = locacaoService.alugarFilme(usuario, filmes);
+	}
+	
+	@Test
+	public void deveNotificarPorEmailLocacoesAtrasadas() {
+		//Cenario
+		Usuario usuario = umUsuario().get(); 		
+		Usuario usuario2 = umUsuario().comNome("Pedro").get(); 		
+		
+		List<Locacao> locacoes = Arrays.asList(
+			LocacaoBuilder.umaLocacao().atrasada().comUsuario(usuario).get(),
+			LocacaoBuilder.umaLocacao().comUsuario(usuario2).get()
+		);
+		
+		Mockito.when(dao.findEmAtraso()).thenReturn(locacoes);
+		
+		//Acao
+		locacaoService.notificarAtraso();
+		
+		//Verificacao
+		Mockito.verify(emailService).notificarAtraso(usuario);
+		Mockito.verify(emailService, Mockito.never()).notificarAtraso(usuario2);
+		Mockito.verifyNoMoreInteractions(emailService);
 	}
 }

@@ -10,9 +10,13 @@ public class UsuarioBuilder {
 	
 	public static UsuarioBuilder umUsuario() {
 		UsuarioBuilder builder = new UsuarioBuilder();
-		builder.usuario = new Usuario();
-		builder.usuario.setNome("João Verissimo");
+		builder.usuario = new Usuario("João Verissimo");
 		return builder;
+	}
+
+	public UsuarioBuilder comNome(String nome) {
+		usuario.setNome(nome);
+		return this;
 	}
 	
 	public Usuario get() {
