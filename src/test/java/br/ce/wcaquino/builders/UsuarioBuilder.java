@@ -8,19 +8,19 @@ public class UsuarioBuilder {
 	
 	private UsuarioBuilder() {}
 	
-	public static UsuarioBuilder umUsuario() {
+	public static UsuarioBuilder umUsuario(){
 		UsuarioBuilder builder = new UsuarioBuilder();
-		builder.usuario = new Usuario("João Verissimo");
+		builder.usuario = new Usuario();
+		builder.usuario.setNome("Usuario 1");
 		return builder;
 	}
-
+	
 	public UsuarioBuilder comNome(String nome) {
 		usuario.setNome(nome);
 		return this;
 	}
 	
-	public Usuario get() {
+	public Usuario get(){
 		return usuario;
 	}
-	
 }

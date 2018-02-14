@@ -1,12 +1,17 @@
 package br.ce.wcaquino.servicos;
 
+import static br.ce.wcaquino.builders.FilmeBuilder.umFilme;
+import static br.ce.wcaquino.builders.UsuarioBuilder.umUsuario;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +52,23 @@ public class LocacaoValoresTest {
 	@Parameter(value=2)
 	public String cenario;
 	
+	@Before
+	public void setup(){
+		MockitoAnnotations.initMocks(this);
+		//System.out.println("Iniciando 3...");
+		//CalculadoraTest.ordem.append(3);
+	}
+	
+	@After
+	public void tearDown(){
+		//System.out.println("finalizando 3...");
+	}
+	
+	@AfterClass
+	public static void tearDownClass(){
+		//System.out.println(CalculadoraTest.ordem.toString());
+	}
+	
 	private static Filme filme1 = FilmeBuilder.umFilme().get();
 	private static Filme filme2 = FilmeBuilder.umFilme().get();
 	private static Filme filme3 = FilmeBuilder.umFilme().get();
@@ -69,15 +91,12 @@ public class LocacaoValoresTest {
 		});
 	}
 	
-	@Before
-	public void setup() {
-		MockitoAnnotations.initMocks(this);
-	}
-	
 	@Test
-	public void deveAplicarDescontoConformeParametros() throws LocadoraException, FilmeSemEstoqueException {
+	public void deveAplicarDescontoConformeParametros() throws FilmeSemEstoqueException, LocadoraException, InterruptedException{
 		//Cenario
-		Usuario usuario = new Usuario("João Verissimo");
+		Usuario usuario = umUsuario().get();
+		
+		//Thread.sleep(5000);
 		
 		//Acao
 		Locacao locacao = locacaoService.alugarFilme(usuario, filmes);
@@ -85,5 +104,4 @@ public class LocacaoValoresTest {
 		//Verificacao
 		Assert.assertThat(locacao.getValor(), is(equalTo(valorLocacao)));
 	}
-	
 }
