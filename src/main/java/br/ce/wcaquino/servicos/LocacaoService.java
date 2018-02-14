@@ -40,7 +40,7 @@ public class LocacaoService {
 		MockitoAnnotations.initMocks(this);
 	}
 	
-	public Double getPrecoLocacao(List<Filme> filmes) {
+	private Double getPrecoLocacao(List<Filme> filmes) {
 		Double retorno = 0D;
 		
 		for (int i = 0; i < filmes.size(); i++) {

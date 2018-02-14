@@ -9,6 +9,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -263,6 +265,20 @@ public class LocacaoServiceTest {
 		
 		//acao
 		locacaoService.alugarFilme(usuario, filmes);
-
+	}
+	
+	@Test
+	public void deveTestarValorMock() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		//cenario
+		Usuario usuario = UsuarioBuilder.umUsuario().get();
+		List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilme().get());
+	
+		Class<LocacaoService> clazz = LocacaoService.class;
+		Method metodo = clazz.getDeclaredMethod("getPrecoLocacao", List.class); //List<Filme> => List.class
+		metodo.setAccessible(true);
+		Double precoLocacao = (Double) metodo.invoke(locacaoService, filmes);
+		
+		//verificacao
+		Assert.assertThat(precoLocacao, is(10.0));
 	}
 }
