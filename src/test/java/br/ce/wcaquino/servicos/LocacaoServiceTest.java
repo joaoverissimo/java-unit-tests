@@ -2,6 +2,8 @@ package br.ce.wcaquino.servicos;
 
 import static br.ce.wcaquino.utils.DataUtils.adicionarDias;
 import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
+import static matchers.LocadoraMatchers.caiEm;
+import static matchers.LocadoraMatchers.caiEmUmaSegunda;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
@@ -32,6 +34,8 @@ import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.excessoes.FilmeSemEstoqueException;
 import br.ce.wcaquino.excessoes.LocadoraException;
 import br.ce.wcaquino.utils.DataUtils;
+import matchers.DiaSemanaMatcher;
+import matchers.LocadoraMatchers;
 
 public class LocacaoServiceTest {
 
@@ -40,7 +44,6 @@ public class LocacaoServiceTest {
 
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
-	
 	
 	@Test
 	public void deveAlugarFilme() throws Exception {
@@ -195,7 +198,8 @@ public class LocacaoServiceTest {
 		Locacao locacao = locacaoService.alugarFilme(usuario, filmes);
 		
 		//Verificacao
-		boolean isSegunda = DataUtils.verificarDiaSemana(locacao.getDataRetorno(), Calendar.MONDAY);
-		Assert.assertTrue(isSegunda);
+		//Assert.assertThat(locacao.getDataRetorno(), new DiaSemanaMatcher(Calendar.MONDAY));
+		//Assert.assertThat(locacao.getDataRetorno(), caiEm(Calendar.MONDAY));
+		Assert.assertThat(locacao.getDataRetorno(), caiEmUmaSegunda());
 	}
 }
